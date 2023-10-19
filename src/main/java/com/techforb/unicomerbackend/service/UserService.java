@@ -17,7 +17,7 @@ public class UserService {
 
 	@Autowired
 	private UserRepository userRepository;
-	
+
 	@Autowired
 	private List<RegisterValidation> registerValidations;
 
@@ -35,7 +35,8 @@ public class UserService {
 	public UserResponseDTO findUserById(Long id) {
 		try {
 			Optional<User> user = this.userRepository.findById(id);
-			return new UserResponseDTO(user.get().getId(), user.get().getUsername(), user.get().getUserTransfers(), user.get().getUserCards());
+			return new UserResponseDTO(user.get().getId(), user.get().getUsername(), user.get().getUserTransfers(),
+					user.get().getUserCards());
 		} catch (Exception e) {
 			throw new InternalError("an internal error occurred when trying to access the database");
 		}
@@ -43,8 +44,7 @@ public class UserService {
 
 	public void userRegister(UserRegisterRequestDTO userRegisterDTO) {
 		this.registerValidations.forEach(v -> v.validate(userRegisterDTO));
-		
-		
+
 	}
 
 }
