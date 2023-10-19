@@ -15,12 +15,16 @@ import lombok.Data;
 public class UserResponseDTO {
 
 	private Long id;
-	
+
 	@NotNull(message = "name field cannot be null")
 	private String username;
 
 	private List<UserTransfer> userTransfers;
 
 	private List<UserCard> userCards;
+
+//	public Double getBalance() {
+//		return BalanceService.getBalance(this.userTransfers);
+//	}
 
 }
