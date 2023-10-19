@@ -44,7 +44,8 @@ public class UserService {
 
 	public void userRegister(UserRegisterRequestDTO userRegisterDTO) {
 		this.registerValidations.forEach(v -> v.validate(userRegisterDTO));
-
+		User user = new User(null, userRegisterDTO.getUsername(), userRegisterDTO.getUserLogin(), userRegisterDTO.getPassword(), null, null);
+		this.userRepository.save(user);
 	}
 
 }
