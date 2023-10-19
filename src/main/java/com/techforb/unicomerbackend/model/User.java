@@ -24,6 +24,10 @@ public class User {
 	@Column(name = "username")
 	@NotNull(message = "name field cannot be null")
 	private String username;
+	
+	@Column(name = "user_login", unique = true)
+	@Size(min = 4, message = "login must have at least 4 characters")
+	private String userLogin;
 
 	@Column(name = "user_password")
 	@NotNull(message = "password field cannot be null")

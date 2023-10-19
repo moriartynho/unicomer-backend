@@ -6,4 +6,6 @@ import com.techforb.unicomerbackend.model.User;
 
 public interface UserRepository extends JpaRepository<User, Long> {
 
+	boolean existsByUserLogin(String userLogin);
+
 }
