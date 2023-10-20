@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import com.techforb.unicomerbackend.exception.TransferException;
 import com.techforb.unicomerbackend.exception.ValidateException;
 
 public class ResolveExceptionHandler {
@@ -31,6 +32,13 @@ public class ResolveExceptionHandler {
 			HttpServletRequest request) {
 		return popularResponseMessageError(e, HttpStatus.BAD_REQUEST.value(), e.getMessage(), request);
 	}
+	
+	@ExceptionHandler(TransferException.class)
+	public ResponseEntity<ResponseMessageError> handleTransferException(TransferException e,
+			HttpServletRequest request) {
+		return popularResponseMessageError(e, HttpStatus.BAD_REQUEST.value(), e.getMessage(), request);
+	}
+	
 
 	private static ResponseEntity<ResponseMessageError> popularResponseMessageError(Exception e, Integer status,
 			String titulo, HttpServletRequest request) {

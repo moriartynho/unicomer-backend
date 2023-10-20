@@ -1,4 +1,4 @@
-package com.techforb.unicomerbackend.service.valdation.register;
+package com.techforb.unicomerbackend.service.validation.register;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

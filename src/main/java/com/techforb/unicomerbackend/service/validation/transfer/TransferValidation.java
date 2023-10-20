@@ -1,4 +1,4 @@
-package com.techforb.unicomerbackend.service.valdation.transfer;
+package com.techforb.unicomerbackend.service.validation.transfer;
 
 import java.math.BigDecimal;
 import java.util.Optional;
