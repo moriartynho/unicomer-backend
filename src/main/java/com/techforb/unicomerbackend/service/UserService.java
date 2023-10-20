@@ -1,5 +1,6 @@
 package com.techforb.unicomerbackend.service;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -46,7 +47,7 @@ public class UserService {
 		try {
 			
 			this.registerValidations.forEach(v -> v.validate(userRegisterDTO));
-			User user = new User(null, userRegisterDTO.getUsername(), userRegisterDTO.getUserLogin(), userRegisterDTO.getPassword(), null, null);
+			User user = new User(null, userRegisterDTO.getUsername(), userRegisterDTO.getUserLogin(), userRegisterDTO.getPassword(),new BigDecimal(0.0), null, null);
 			this.userRepository.save(user);
 		} catch (Exception e) {
 			throw new InternalError("an internal error occurred when trying to access the database");

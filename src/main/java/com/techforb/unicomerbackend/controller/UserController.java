@@ -43,4 +43,5 @@ public class UserController {
 		userService.userRegister(userRegisterDTO);
 		return ResponseEntity.ok().build();
 	}
+	
 }

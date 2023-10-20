@@ -1,5 +1,6 @@
 package com.techforb.unicomerbackend.model;
 
+import java.math.BigDecimal;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -13,6 +14,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+
+import org.springframework.beans.factory.annotation.Value;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -45,6 +48,8 @@ public class User {
 	@NotNull(message = "password field cannot be null")
 	@Size(min = 6, message = "password must have at least 6 characters")
 	private String password;
+	
+	private BigDecimal balance;
 
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private Set<UserTransfer> userTransfers;
