@@ -1,5 +1,7 @@
 package com.techforb.unicomerbackend.dto;
 
+import java.math.BigDecimal;
+
 import javax.validation.constraints.NotNull;
 
 import lombok.AllArgsConstructor;
@@ -13,5 +15,8 @@ public class UserResponseDTO {
 
 	@NotNull(message = "name field cannot be null")
 	private String username;
+	
+	private BigDecimal balance;
+	
 
 }

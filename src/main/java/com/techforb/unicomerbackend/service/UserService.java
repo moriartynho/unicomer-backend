@@ -25,7 +25,7 @@ public class UserService {
 	public List<UserResponseDTO> findAllUsers() {
 		try {
 			return this.userRepository.findAll().stream()
-					.map(x -> new UserResponseDTO(x.getId(), x.getUsername()))
+					.map(x -> new UserResponseDTO(x.getId(), x.getUsername(), x.getBalance()))
 					.toList();
 		} catch (Exception e) {
 			throw new InternalError("an internal error occurred when trying to access the database");
@@ -36,7 +36,7 @@ public class UserService {
 	public UserResponseDTO findUserById(Long id) {
 		try {
 			Optional<User> user = this.userRepository.findById(id);
-			return new UserResponseDTO(user.get().getId(), user.get().getUsername());
+			return new UserResponseDTO(user.get().getId(), user.get().getUsername(), user.get().getBalance());
 		} catch (Exception e) {
 			throw new InternalError("an internal error occurred when trying to access the database");
 		}

@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 import com.techforb.unicomerbackend.dto.UserRegisterRequestDTO;
 
 @Component
-public interface RegisterValidation {
+public interface RegisterValidation{
 	
 	void validate(UserRegisterRequestDTO dto);
 
