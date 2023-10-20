@@ -25,7 +25,7 @@ public class UnicomerBackendApplication implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 	
-		User u1 = new User(null, "Wilkson Junior", "wilkson", "senha1234", new BigDecimal(1000.0), null, null), u2 = new User(null, "Carlos", "carlos", "senha1234",new BigDecimal(1000.0), null, null);
+		User u1 = new User(null, "Wilkson Junior", "wilkson", "senha1234", new BigDecimal(0.0), null, null), u2 = new User(null, "Carlos", "carlos", "senha1234",new BigDecimal(0.0), null, null);
 		Arrays.asList(u1, u2).forEach(x -> userRepository.save(x));
 		
 	}

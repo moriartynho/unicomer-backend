@@ -10,7 +10,9 @@ import org.springframework.stereotype.Service;
 import com.techforb.unicomerbackend.dto.UserRegisterRequestDTO;
 import com.techforb.unicomerbackend.dto.UserResponseDTO;
 import com.techforb.unicomerbackend.model.User;
+import com.techforb.unicomerbackend.repository.UserCardRepository;
 import com.techforb.unicomerbackend.repository.UserRepository;
+import com.techforb.unicomerbackend.repository.UserTransnferRepository;
 import com.techforb.unicomerbackend.service.validation.register.RegisterValidation;
 
 @Service
@@ -18,14 +20,20 @@ public class UserService {
 
 	@Autowired
 	private UserRepository userRepository;
+	
+	@Autowired
+	private UserTransnferRepository transnferRepository; 
 
 	@Autowired
 	private List<RegisterValidation> registerValidations;
+	
+	@Autowired
+	private UserCardRepository cardRepository;
 
 	public List<UserResponseDTO> findAllUsers() {
 		try {
 			return this.userRepository.findAll().stream()
-					.map(x -> new UserResponseDTO(x.getId(), x.getUsername(), x.getBalance())).toList();
+					.map(x -> new UserResponseDTO(x.getId(), x.getUsername(), x.getBalance(), transnferRepository.findByUser(x), cardRepository.findByUser(x))).toList();
 		} catch (Exception e) {
 			throw new InternalError("an internal error occurred when trying to access the database");
 		}
@@ -35,9 +43,9 @@ public class UserService {
 	public UserResponseDTO findUserById(Long id) {
 		try {
 			Optional<User> user = this.userRepository.findById(id);
-			return new UserResponseDTO(user.get().getId(), user.get().getUsername(), user.get().getBalance());
+			return new UserResponseDTO(user.get().getId(), user.get().getUsername(), user.get().getBalance(), user.get().getUserTransfers(), user.get().getUserCards());
 		} catch (Exception e) {
-			throw new InternalError("an internal error occurred when trying to access the database");
+			throw new InternalError(e.getMessage());
 		}
 	}
 
@@ -50,7 +58,7 @@ public class UserService {
 					userRegisterDTO.getPassword(), BigDecimal.ZERO, null, null);
 			this.userRepository.save(user);
 		} catch (Exception e) {
-			throw new InternalError("an internal error occurred when trying to access the database");
+			throw new InternalError(e.getMessage());
 		}
 	}
 

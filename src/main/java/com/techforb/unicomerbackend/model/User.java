@@ -3,7 +3,6 @@ package com.techforb.unicomerbackend.model;
 import java.math.BigDecimal;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -49,11 +48,10 @@ public class User {
 	
 	private BigDecimal balance;
 
-	
-	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@OneToMany(fetch = FetchType.EAGER)
 	private Set<UserTransfer> userTransfers;
 
-	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@OneToMany(fetch = FetchType.EAGER)
 	private Set<UserCard> userCards;
 
 }
