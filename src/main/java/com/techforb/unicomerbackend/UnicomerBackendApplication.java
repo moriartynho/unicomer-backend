@@ -31,7 +31,7 @@ public class UnicomerBackendApplication implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 	
-		User u1 = new User("Wilkson Junior", "wilkson", "senha1234"), u2 = new User("Carlos", "carlos", "senha1234");
+		User u1 = new User(null, "Wilkson Junior", "wilkson", "senha1234", null, null), u2 = new User(null, "Carlos", "carlos", "senha1234", null, null);
 		UserTransfer ut1 = new UserTransfer(null, LocalDateTime.now(), new BigDecimal("1500.00"), TransactionType.DEPOSIT, u1), 
 				ut2 = new UserTransfer(null, LocalDateTime.now(), new BigDecimal("150.00"), TransactionType.WITHDRAW, u1);
 		

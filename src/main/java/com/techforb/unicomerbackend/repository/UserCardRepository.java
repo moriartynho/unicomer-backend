@@ -6,4 +6,5 @@ import com.techforb.unicomerbackend.model.UserCard;
 
 public interface UserCardRepository extends JpaRepository<UserCard, Long> {
 
+
 }

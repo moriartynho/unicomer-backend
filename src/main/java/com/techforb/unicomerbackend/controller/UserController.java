@@ -2,6 +2,8 @@ package com.techforb.unicomerbackend.controller;
 
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,11 +27,13 @@ public class UserController {
 	private UserService userService;
 
 	@GetMapping
+	@Transactional
 	public ResponseEntity<List<UserResponseDTO>> findAllUsers(){
 		return ResponseEntity.ok().body(userService.findAllUsers());
 	}
 	
 	@GetMapping(value = "/{id}")
+	@Transactional
 	public ResponseEntity<UserResponseDTO> findUserById(@PathVariable Long id){
 		return ResponseEntity.ok().body(userService.findUserById(id));
 	}

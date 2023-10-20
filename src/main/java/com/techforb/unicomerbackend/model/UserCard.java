@@ -54,5 +54,5 @@ public class UserCard {
 	
 	@ManyToOne
 	@JoinColumn(name = "user_id")
-	private User cardUser;
+	private User user;
 }

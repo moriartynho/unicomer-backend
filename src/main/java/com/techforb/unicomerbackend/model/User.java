@@ -1,10 +1,11 @@
 package com.techforb.unicomerbackend.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -17,7 +18,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
 
 @Entity
 @Table(name = "users")
@@ -35,8 +35,9 @@ public class User {
 	@Column(name = "username")
 	@NotNull(message = "name field cannot be null")
 	private String username;
-	
+
 	@Column(name = "user_login", unique = true)
+	@NotNull(message = "login field cannot be null")
 	@Size(min = 4, message = "login must have at least 4 characters")
 	private String userLogin;
 
@@ -45,18 +46,10 @@ public class User {
 	@Size(min = 6, message = "password must have at least 6 characters")
 	private String password;
 
-	@OneToMany
-	private List<UserTransfer> userTransfers;
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	private Set<UserTransfer> userTransfers;
 
-	@OneToMany
-	private List<UserCard> userCards;
-	
-	public User(String username, String userLogin, String password) {
-		this.username = username;
-		this.userLogin = userLogin;
-		this.password = password;
-		this.userTransfers = new ArrayList<>();
-		this.userCards = new ArrayList<>();
-	}
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	private Set<UserCard> userCards;
 
 }

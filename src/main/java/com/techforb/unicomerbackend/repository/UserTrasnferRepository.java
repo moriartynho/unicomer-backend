@@ -6,4 +6,5 @@ import com.techforb.unicomerbackend.model.UserTransfer;
 
 public interface UserTrasnferRepository extends JpaRepository<UserTransfer, Long> {
 
+
 }
