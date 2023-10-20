@@ -7,9 +7,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.techforb.unicomerbackend.dto.DepositRequestDTO;
 import com.techforb.unicomerbackend.dto.TransferRequestDTO;
 import com.techforb.unicomerbackend.dto.UserResponseDTO;
+import com.techforb.unicomerbackend.dto.UserTransactionRequestDTO;
 import com.techforb.unicomerbackend.service.TransactionService;
 
 @RestController
@@ -26,8 +26,14 @@ public class TransactionController {
 	}
 	
 	@PostMapping(value = "/make-deposit")
-	public ResponseEntity<UserResponseDTO> makeDeposit(@RequestBody DepositRequestDTO depositDTO){
+	public ResponseEntity<UserResponseDTO> makeDeposit(@RequestBody UserTransactionRequestDTO depositDTO){
 		transactionService.makeDeposit(depositDTO);
+		return ResponseEntity.ok().build();
+	}
+	
+	@PostMapping(value = "/make-withdraw")
+	public ResponseEntity<UserResponseDTO> makeWithdraw(@RequestBody UserTransactionRequestDTO depositDTO){
+		transactionService.makeWithdraw(depositDTO);
 		return ResponseEntity.ok().build();
 	}
 

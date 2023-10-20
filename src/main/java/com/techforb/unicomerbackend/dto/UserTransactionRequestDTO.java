@@ -9,12 +9,12 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class DepositRequestDTO {
+public class UserTransactionRequestDTO {
 	
 	@NotNull(message = "id cannot be null")
 	private Long accountId;
 	
 	@NotNull(message = "amount cannot be null")
-	private BigDecimal depositAmount;
+	private BigDecimal transactionAmount;
 
 }

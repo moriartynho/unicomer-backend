@@ -9,7 +9,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.techforb.unicomerbackend.dto.DepositRequestDTO;
+import com.techforb.unicomerbackend.dto.UserTransactionRequestDTO;
 import com.techforb.unicomerbackend.dto.TransferRequestDTO;
 import com.techforb.unicomerbackend.exception.TransferException;
 import com.techforb.unicomerbackend.model.User;
@@ -19,6 +19,7 @@ import com.techforb.unicomerbackend.repository.UserRepository;
 import com.techforb.unicomerbackend.repository.UserTransnferRepository;
 import com.techforb.unicomerbackend.service.validation.deposit.DepositValidation;
 import com.techforb.unicomerbackend.service.validation.transfer.TransferValidation;
+import com.techforb.unicomerbackend.service.validation.withdraw.WithdrawValidation;
 
 @Service
 public class TransactionService {
@@ -34,6 +35,9 @@ public class TransactionService {
 
 	@Autowired
 	private List<DepositValidation> depositValidatons;
+	
+	@Autowired
+	private List<WithdrawValidation> withdrawValidations;
 
 	public void makeTransfer(TransferRequestDTO transferDTO) {
 		try {
@@ -57,14 +61,14 @@ public class TransactionService {
 		}
 	}
 
-	public void makeDeposit(DepositRequestDTO depositDTO) {
+	public void makeDeposit(UserTransactionRequestDTO depositDTO) {
 
 		try {
-			User user = validateDeposit(depositDTO);
-			UserTransfer deposit = new UserTransfer(null, LocalDateTime.now(), depositDTO.getDepositAmount(),
+			User user = validateUserTransaction(depositDTO, TransactionType.DEPOSIT);
+			UserTransfer deposit = new UserTransfer(null, LocalDateTime.now(), depositDTO.getTransactionAmount(),
 					TransactionType.DEPOSIT, user);
 			user.setBalance(
-					new BigDecimal(user.getBalance().doubleValue() + depositDTO.getDepositAmount().doubleValue()));
+					new BigDecimal(user.getBalance().doubleValue() + depositDTO.getTransactionAmount().doubleValue()));
 			transnferRepository.save(deposit);
 			userRepository.save(user);
 		} catch (Exception e) {
@@ -72,11 +76,32 @@ public class TransactionService {
 		}
 	}
 
-	private User validateDeposit(DepositRequestDTO depositDTO) {
+	public void makeWithdraw(UserTransactionRequestDTO depositDTO) {
 		try {
+			User user = validateUserTransaction(depositDTO, TransactionType.WITHDRAW);
+			UserTransfer withdraw = new UserTransfer(null, LocalDateTime.now(), depositDTO.getTransactionAmount(),
+					TransactionType.WITHDRAW, user);
+			user.setBalance(
+					new BigDecimal(user.getBalance().doubleValue() - depositDTO.getTransactionAmount().doubleValue()));
+			transnferRepository.save(withdraw);
+			userRepository.save(user);
+		} catch (Exception e) {
+			throw new TransferException(e.getMessage());
+		}
+
+	}
+
+	private User validateUserTransaction(UserTransactionRequestDTO depositDTO, TransactionType transactionType) {
+		try {
+			
 			Optional<User> user = userRepository.findById(depositDTO.getAccountId());
-			this.depositValidatons.forEach(v -> v.validate(depositDTO, user));
-			return user.get();
+			
+			if (transactionType.equals(TransactionType.DEPOSIT)) {
+				this.depositValidatons.forEach(v -> v.validate(depositDTO));
+				return user.get();
+			} else
+				this.withdrawValidations.forEach(v -> v.validate(depositDTO));
+				return user.get();
 		} catch (Exception e) {
 			throw new TransferException(e.getMessage());
 		}
