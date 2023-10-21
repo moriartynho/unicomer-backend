@@ -14,6 +14,7 @@ import com.techforb.unicomerbackend.dto.UserResponseDTO;
 import com.techforb.unicomerbackend.exception.ValidateException;
 import com.techforb.unicomerbackend.model.User;
 import com.techforb.unicomerbackend.model.UserCard;
+import com.techforb.unicomerbackend.model.UserTransfer;
 import com.techforb.unicomerbackend.repository.UserCardRepository;
 import com.techforb.unicomerbackend.repository.UserRepository;
 import com.techforb.unicomerbackend.repository.UserTransnferRepository;
@@ -69,9 +70,7 @@ public class UserService {
 
 	public void insertUserCard(Long userId, CardRegisterDTO cardRegisterDTO) {
 		try {
-			if (!this.userRepository.existsById(userId)) {
-				throw new ValidateException("invalid user in database");
-			}
+
 
 			if (cardRegisterDTO.getCardExpirationDate().isBefore(LocalDateTime.now())) {
 				throw new ValidateException("invalid expiration date");
@@ -87,5 +86,27 @@ public class UserService {
 		}
 
 	}
+
+	public List<UserCard> findCardsByUserId(Long userId) {
+		try {
+			return this.cardRepository.findByUserId(userId);
+		} catch (Exception e) {
+			throw new InternalError(e.getMessage());
+		}
+	}
+	
+	public List<UserTransfer> findTransfersByUserId(Long userId) {
+		try {
+			return this.transnferRepository.findByUserId(userId);
+		} catch (Exception e) {
+			throw new InternalError(e.getMessage());
+		}
+	}
+	
+	public boolean existsById(Long id) {
+		return this.userRepository.existsById(id);
+	}
+
+	
 
 }

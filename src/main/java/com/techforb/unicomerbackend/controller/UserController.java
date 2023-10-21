@@ -17,9 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.techforb.unicomerbackend.dto.CardRegisterDTO;
 import com.techforb.unicomerbackend.dto.UserRegisterRequestDTO;
 import com.techforb.unicomerbackend.dto.UserResponseDTO;
+import com.techforb.unicomerbackend.exception.ValidateException;
 import com.techforb.unicomerbackend.service.UserService;
-
-
 
 @RestController
 @RequestMapping(value = "/users")
@@ -30,25 +29,47 @@ public class UserController {
 
 	@GetMapping
 	@Transactional
-	public ResponseEntity<List<UserResponseDTO>> findAllUsers(){
+	public ResponseEntity<List<UserResponseDTO>> findAllUsers() {
 		return ResponseEntity.ok().body(userService.findAllUsers());
 	}
-	
+
 	@GetMapping(value = "/{id}/details")
 	@Transactional
-	public ResponseEntity<UserResponseDTO> findUserById(@PathVariable Long id){
+	public ResponseEntity<UserResponseDTO> findUserById(@PathVariable Long id) {
 		return ResponseEntity.ok().body(userService.findUserById(id));
 	}
-	
-	@PostMapping(value="/register")
+
+	@PostMapping(value = "/register")
 	@Transactional
-	public ResponseEntity<UserResponseDTO> userRegister(@RequestBody UserRegisterRequestDTO userRegisterDTO){
+	public ResponseEntity<UserResponseDTO> userRegister(@RequestBody UserRegisterRequestDTO userRegisterDTO) {
 		userService.userRegister(userRegisterDTO);
 		return ResponseEntity.ok().build();
 	}
-	
+
+	@GetMapping(value = "/{id}/transfers")
+	@Transactional
+	public ResponseEntity<?> findUsersTransfersById(@RequestParam Long userId) {
+		if (!userService.existsById(userId)) {
+			throw new ValidateException("invalid user in database");
+		}
+		return ResponseEntity.ok().body(userService.findTransfersByUserId(userId));
+	}
+
+	@GetMapping(value = "/{id}/cards")
+	@Transactional
+	public ResponseEntity<?> finsUserCardsById(@RequestParam Long userId) {
+		if (!userService.existsById(userId)) {
+			throw new ValidateException("invalid user in database");
+		}
+		return ResponseEntity.ok().body(userService.findCardsByUserId(userId));
+	}
+
 	@PostMapping(value = "/{id}/insert-card")
-	public ResponseEntity<?> insertUserCard(@RequestParam Long userId, @RequestBody CardRegisterDTO cardRegisterDTO){
+	@Transactional
+	public ResponseEntity<?> insertUserCard(@RequestParam Long userId, @RequestBody CardRegisterDTO cardRegisterDTO) {
+		if (!userService.existsById(userId)) {
+			throw new ValidateException("invalid user in database");
+		}
 		userService.insertUserCard(userId, cardRegisterDTO);
 		return ResponseEntity.ok().build();
 	}
