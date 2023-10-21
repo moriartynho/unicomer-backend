@@ -15,6 +15,8 @@
 	<description>Backend from Unicomer System</description>
 	<properties>
 		<java.version>17</java.version>
+		<maven.compiler.source>17</maven.compiler.source>
+		<maven.compiler.target>17</maven.compiler.target>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -98,6 +100,14 @@
                 <configuration>
                     <mainClass>com.techforb.unicomerbackend.UnicomerBackendApplication</mainClass>
                 </configuration>
+			</plugin>
+			<plugin>
+			    <groupId>org.apache.maven.plugins</groupId>
+			    <artifactId>maven-compiler-plugin</artifactId>
+			    <configuration>
+			        <source>17</source>
+			        <target>17</target>
+			    </configuration>
 			</plugin>
 		</plugins>
 	</build>
