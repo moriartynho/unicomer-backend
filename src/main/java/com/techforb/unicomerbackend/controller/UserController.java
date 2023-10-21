@@ -11,8 +11,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.techforb.unicomerbackend.dto.CardRegisterDTO;
 import com.techforb.unicomerbackend.dto.UserRegisterRequestDTO;
 import com.techforb.unicomerbackend.dto.UserResponseDTO;
 import com.techforb.unicomerbackend.service.UserService;
@@ -32,16 +34,22 @@ public class UserController {
 		return ResponseEntity.ok().body(userService.findAllUsers());
 	}
 	
-	@GetMapping(value = "/{id}")
+	@GetMapping(value = "/{id}/details")
 	@Transactional
 	public ResponseEntity<UserResponseDTO> findUserById(@PathVariable Long id){
 		return ResponseEntity.ok().body(userService.findUserById(id));
 	}
 	
-	@PostMapping()
+	@PostMapping(value="/register")
+	@Transactional
 	public ResponseEntity<UserResponseDTO> userRegister(@RequestBody UserRegisterRequestDTO userRegisterDTO){
 		userService.userRegister(userRegisterDTO);
 		return ResponseEntity.ok().build();
 	}
 	
+	@PostMapping(value = "/{id}/insert-card")
+	public ResponseEntity<?> insertUserCard(@RequestParam Long userId, @RequestBody CardRegisterDTO cardRegisterDTO){
+		userService.insertUserCard(userId, cardRegisterDTO);
+		return ResponseEntity.ok().build();
+	}
 }

@@ -1,6 +1,6 @@
 package com.techforb.unicomerbackend.model;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,7 +10,6 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.CreditCardNumber;
 
@@ -22,7 +21,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name ="user_cards")
+@Table(name = "user_cards")
 @Getter
 @Setter
 @AllArgsConstructor
@@ -33,21 +32,20 @@ public class UserCard {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "card_id")
 	private Long id;
-	
+
 	@CreditCardNumber
 	@NotNull(message = "card number field cannot be null")
 	@Column(name = "card_number")
 	private String cardNumber;
-	
-	@JsonFormat(pattern = "MM/yyyy")
+
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "MM/yyyy", timezone = "GMT-3")
 	@Column(name = "card_expiration_date")
-	private Date cardExpirationDate;
-	
+	private LocalDateTime cardExpirationDate;
+
 	@Column(name = "card_verification_value")
-	@Size(min = 3, max = 3, message = "card verification value must have 3 digits")
 	@NotNull(message = "card verification value cannot be null")
 	private Integer cardVerificationValue;
-	
+
 	@Column(name = "card_nickname")
 	private String cardNickname;
 
