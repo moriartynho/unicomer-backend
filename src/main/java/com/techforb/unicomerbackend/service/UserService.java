@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.techforb.unicomerbackend.dto.CardRegisterDTO;
+import com.techforb.unicomerbackend.dto.UserLoginRequestDTO;
 import com.techforb.unicomerbackend.dto.UserRegisterRequestDTO;
 import com.techforb.unicomerbackend.dto.UserResponseDTO;
 import com.techforb.unicomerbackend.exception.ValidateException;
@@ -67,10 +68,20 @@ public class UserService {
 			throw new InternalError(e.getMessage());
 		}
 	}
+	
+	public void userLogin(UserLoginRequestDTO userLoginDTO) {
+		try {
+			if(!userRepository.findByUserLogin(userLoginDTO.getUserLogin()).get().getPassword().equals(userLoginDTO.getUserPassword())) {
+				throw new ValidateException("incorret password");
+			}
+			System.out.println("login sucessful");
+		} catch (Exception e) {
+			throw new ValidateException(e.getMessage());
+		}
+	}
 
 	public void insertUserCard(Long userId, CardRegisterDTO cardRegisterDTO) {
 		try {
-
 
 			if (cardRegisterDTO.getCardExpirationDate().isBefore(LocalDateTime.now())) {
 				throw new ValidateException("invalid expiration date");
@@ -94,7 +105,7 @@ public class UserService {
 			throw new InternalError(e.getMessage());
 		}
 	}
-	
+
 	public List<UserTransfer> findTransfersByUserId(Long userId) {
 		try {
 			return this.transnferRepository.findByUserId(userId);
@@ -102,11 +113,13 @@ public class UserService {
 			throw new InternalError(e.getMessage());
 		}
 	}
-	
+
 	public boolean existsById(Long id) {
 		return this.userRepository.existsById(id);
 	}
 
-	
+	public boolean existsByUserLogin(String userLogin) {
+		return this.userRepository.existsByUserLogin(userLogin);
+	}
 
 }

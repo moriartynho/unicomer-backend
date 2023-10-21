@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.techforb.unicomerbackend.dto.CardRegisterDTO;
+import com.techforb.unicomerbackend.dto.UserLoginRequestDTO;
 import com.techforb.unicomerbackend.dto.UserRegisterRequestDTO;
 import com.techforb.unicomerbackend.dto.UserResponseDTO;
 import com.techforb.unicomerbackend.exception.ValidateException;
@@ -35,7 +36,7 @@ public class UserController {
 
 	@GetMapping(value = "/{id}/details")
 	@Transactional
-	public ResponseEntity<UserResponseDTO> findUserById(@PathVariable Long id) {
+	public ResponseEntity<UserResponseDTO> findUserByUserId(@PathVariable Long id) {
 		return ResponseEntity.ok().body(userService.findUserById(id));
 	}
 
@@ -45,10 +46,20 @@ public class UserController {
 		userService.userRegister(userRegisterDTO);
 		return ResponseEntity.ok().build();
 	}
+	
+	@PostMapping(value = "/login")
+	@Transactional
+	public ResponseEntity<UserResponseDTO> userLogin(@RequestBody UserLoginRequestDTO userLoginDTO) {
+		if(!userService.existsByUserLogin(userLoginDTO.getUserLogin())) {
+			throw new ValidateException("invalid user in database");
+		}
+		userService.userLogin(userLoginDTO);
+		return ResponseEntity.ok().build();
+	}
 
 	@GetMapping(value = "/{id}/transfers")
 	@Transactional
-	public ResponseEntity<?> findUsersTransfersById(@RequestParam Long userId) {
+	public ResponseEntity<?> findUsersTransfersByUserId(@RequestParam Long userId) {
 		if (!userService.existsById(userId)) {
 			throw new ValidateException("invalid user in database");
 		}
