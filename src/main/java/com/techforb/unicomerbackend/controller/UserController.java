@@ -59,29 +59,29 @@ public class UserController {
 
 	@GetMapping(value = "/{id}/transfers")
 	@Transactional
-	public ResponseEntity<?> findUsersTransfersByUserId(@RequestParam Long userId) {
-		if (!userService.existsById(userId)) {
+	public ResponseEntity<?> findUsersTransfersByUserId(@PathVariable Long id) {
+		if (!userService.existsById(id)) {
 			throw new ValidateException("invalid user in database");
 		}
-		return ResponseEntity.ok().body(userService.findTransfersByUserId(userId));
+		return ResponseEntity.ok().body(userService.findTransfersByUserId(id));
 	}
 
 	@GetMapping(value = "/{id}/cards")
 	@Transactional
-	public ResponseEntity<?> finsUserCardsById(@RequestParam Long userId) {
-		if (!userService.existsById(userId)) {
+	public ResponseEntity<?> finsUserCardsById(@PathVariable Long id) {
+		if (!userService.existsById(id)) {
 			throw new ValidateException("invalid user in database");
 		}
-		return ResponseEntity.ok().body(userService.findCardsByUserId(userId));
+		return ResponseEntity.ok().body(userService.findCardsByUserId(id));
 	}
 
 	@PostMapping(value = "/{id}/insert-card")
 	@Transactional
-	public ResponseEntity<?> insertUserCard(@RequestParam Long userId, @RequestBody CardRegisterDTO cardRegisterDTO) {
-		if (!userService.existsById(userId)) {
+	public ResponseEntity<?> insertUserCard(@PathVariable Long id, @RequestBody CardRegisterDTO cardRegisterDTO) {
+		if (!userService.existsById(id)) {
 			throw new ValidateException("invalid user in database");
 		}
-		userService.insertUserCard(userId, cardRegisterDTO);
+		userService.insertUserCard(id, cardRegisterDTO);
 		return ResponseEntity.ok().build();
 	}
 }

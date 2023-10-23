@@ -12,6 +12,7 @@ import com.techforb.unicomerbackend.dto.CardRegisterDTO;
 import com.techforb.unicomerbackend.dto.UserLoginRequestDTO;
 import com.techforb.unicomerbackend.dto.UserRegisterRequestDTO;
 import com.techforb.unicomerbackend.dto.UserResponseDTO;
+import com.techforb.unicomerbackend.exception.InternalErrorException;
 import com.techforb.unicomerbackend.exception.ValidateException;
 import com.techforb.unicomerbackend.model.User;
 import com.techforb.unicomerbackend.model.UserCard;
@@ -41,7 +42,7 @@ public class UserService {
 			return this.userRepository.findAll().stream().map(x -> new UserResponseDTO(x.getId(), x.getUsername(),
 					x.getBalance(), transnferRepository.findByUser(x), cardRepository.findByUser(x))).toList();
 		} catch (Exception e) {
-			throw new InternalError("an internal error occurred when trying to access the database");
+			throw new InternalErrorException(e.getMessage());
 		}
 
 	}
@@ -52,7 +53,7 @@ public class UserService {
 			return new UserResponseDTO(user.get().getId(), user.get().getUsername(), user.get().getBalance(),
 					user.get().getUserTransfers(), user.get().getUserCards());
 		} catch (Exception e) {
-			throw new InternalError(e.getMessage());
+			throw new InternalErrorException(e.getMessage());
 		}
 	}
 
@@ -65,7 +66,7 @@ public class UserService {
 					userRegisterDTO.getPassword(), BigDecimal.ZERO, null, null);
 			this.userRepository.save(user);
 		} catch (Exception e) {
-			throw new InternalError(e.getMessage());
+			throw new InternalErrorException(e.getMessage());
 		}
 	}
 	
@@ -76,7 +77,7 @@ public class UserService {
 			}
 			System.out.println("login sucessful");
 		} catch (Exception e) {
-			throw new ValidateException(e.getMessage());
+			throw new InternalErrorException(e.getMessage());
 		}
 	}
 
@@ -93,7 +94,7 @@ public class UserService {
 			this.cardRepository.save(card);
 
 		} catch (Exception e) {
-			throw new InternalError(e.getMessage());
+			throw new InternalErrorException(e.getMessage());
 		}
 
 	}
@@ -102,7 +103,7 @@ public class UserService {
 		try {
 			return this.cardRepository.findByUserId(userId);
 		} catch (Exception e) {
-			throw new InternalError(e.getMessage());
+			throw new InternalErrorException(e.getMessage());
 		}
 	}
 
@@ -110,7 +111,7 @@ public class UserService {
 		try {
 			return this.transnferRepository.findByUserId(userId);
 		} catch (Exception e) {
-			throw new InternalError(e.getMessage());
+			throw new InternalErrorException(e.getMessage());
 		}
 	}
 
