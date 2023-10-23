@@ -51,7 +51,7 @@ public class UserService {
 		try {
 			Optional<User> user = this.userRepository.findById(id);
 			return new UserResponseDTO(user.get().getId(), user.get().getUsername(), user.get().getBalance(),
-					user.get().getUserTransfers(), user.get().getUserCards());
+					transnferRepository.findByUser(user.get()), cardRepository.findByUser(user.get()));
 		} catch (Exception e) {
 			throw new InternalErrorException(e.getMessage());
 		}
